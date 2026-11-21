@@ -1,0 +1,7 @@
+# Subscription Killer Kit
+
+A one-time guide and script pack to cut recurring software costs
+
+- Audit checklist
+- Self-hosted swap guides
+- Cancellation tracker

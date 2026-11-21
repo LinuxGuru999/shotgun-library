@@ -1,0 +1,154 @@
+# Modular Monolith Architecture Blueprint
+
+Design scalable systems without microservices complexity.
+
+# Modular Monolith Architecture Blueprint
+> **Promise:** Design scalable systems without microservices complexity.
+
+## How to Use
+1. Copy this template into your repo (e.g., `docs/architecture/modular-monolith.md`).
+2. Fill each section top-down; do not skip **Module Map** or **Data Ownership**.
+3. Use the **Worked Example** as a reference shape, then delete it.
+4. Review with the final **Checklist** before merging.
+
+---
+
+## 1. System Context
+- **Product:** [Name]
+- **Domain:** [e.g., E-commerce, Fintech]
+- **Primary users:** [Who]
+- **Scale target (12–24 mo):** [RPS, users, data size]
+- **Non-goals:** [What this system will NOT do]
+- **Constraints:** [Team size, budget, compliance, legacy]
+
+## 2. Module Map
+List bounded contexts. Each module owns one capability.
+
+| Module | Capability | Owner (team) | Size (S/M/L) | Depends on |
+|---|---|---|---|---|
+| `catalog` | Product discovery | Team A | M | — |
+| `orders` | Order lifecycle | Team B | L | catalog, payments |
+| `payments` | Charging & refunds | Team C | M | — |
+| `identity` | Auth & profiles | Team A | S | — |
+
+**Rules**
+- Modules depend only on **public APIs** of other modules.
+- No module imports another module's internal packages.
+- Dependency graph must be acyclic (or explicitly documented cycles).
+
+## 3. Module Definition (repeat per module)
+### 3.x `<module-name>`
+- **Responsibility:** [One sentence]
+- **Public API (stable):**
+  - `ModuleFacade` / service interface
+  - Published events: `XHappened`, `YChanged`
+  - Read models exposed: `…`
+- **Internal (private):** entities, repos, handlers, jobs
+- **Data owned:** tables/collections + ownership rule
+- **Invariants:** [Business rules that must hold]
+- **SLA / perf budget:** [p95 latency, throughput]
+
+## 4. Communication Patterns
+Choose per interaction; default to **in-process sync** only when needed.
+
+| Pattern | Use when | Notes |
+|---|---|---|
+| Direct facade call (sync) | Same request, strong consistency | Keep thin; no domain logic in caller |
+| Domain event (async, in-process) | Decouple side effects | Use transactional outbox if crossing module |
+| Scheduled job | Batch / reconciliation | Idempotent; observable |
+
+**Rules**
+- Cross-module calls go through the **facade**, never repositories.
+- Events are immutable facts; version them (`v1`, `v2`).
+- No distributed transactions; use sagas/outbox if needed.
+
+## 5. Data Ownership
+- **Database strategy:** [ ] Single DB, schema-per-module  [ ] DB-per-module  [ ] Hybrid
+- **Rule:** Each table/collection has exactly one owning module.
+- **Shared reads:** via module facade or read models, never direct SQL across modules.
+- **Migrations:** owned by the module; run on deploy.
+
+| Table/Collection | Owner Module | Access Pattern |
+|---|---|---|
+| `orders` | orders | read/write by orders only |
+| `products` | catalog | read via catalog facade |
+
+## 6. Shared Kernel
+Keep minimal. Everything here is **stable and versioned**.
+
+- **Contents:** primitives, value objects, base errors, auth context, clock, IDs
+- **Rules:** No business logic; no module-specific code; changes require all-module review.
+- **Location:** `shared/` package with strict dependency rules.
+
+## 7. Module Boundaries Enforcement
+- **Code:** package-private / internal visibility; public only for facade + events + DTOs.
+- **Build:** module-level modules (Gradle/Maven/npm workspaces) with dependency constraints.
+- **Tests:** ArchUnit / dependency-cruiser rules in CI.
+- **Runtime:** optional module registry; fail fast on illegal access.
+
+## 8. Deployment & Runtime
+- **Unit:** single deployable artifact (container) for whole system.
+- **Config:** per-module config namespaced (`orders.*`).
+- **Startup:** modules self-register; health per module.
+- **Feature flags:** module-scoped, default off for new modules.
+- **Observability:** traces tagged by `module`, metrics per module, logs structured.
+
+## 9. Scaling Strategy
+- **Vertical first:** scale the monolith (CPU/RAM) until limits.
+- **Hot modules:** extract read models / caches (Redis) per module without splitting deployable.
+- **Heavy jobs:** move to separate worker process sharing same codebase.
+- **When to split:** only with proven bottleneck + team boundary; use strangler fig.
+
+## 10. Testing Strategy
+- **Unit:** per module, fast, no DB.
+- **Integration:** module + its DB + fakes for other modules.
+- **Contract tests:** between module facades and consumers.
+- **E2E:** critical user journeys only.
+- **Architecture tests:** enforce boundaries in CI.
+
+## 11. Evolution & Migration
+- **To microservices (if ever):** extract one module at a time; keep facade as anti-corruption layer; use events for async.
+- **Deprecation:** version public APIs; sunset with telemetry.
+- **Rollback:** module-level feature flags + DB migrations reversible.
+
+## 12. Worked Example: Order Management System
+### Context
+Small team (4 devs) building an internal order tool; expects 5k orders/day in 18 months; no need for microservices.
+
+### Module Map
+| Module | Capability | Owner | Size | Depends on |
+|---|---|---|---|---|
+| `identity` | Auth & users | Dev A | S | — |
+| `catalog` | Products & pricing | Dev B | M | — |
+| `orders` | Order lifecycle | Dev C | L | catalog, identity, payments |
+| `payments` | Charge & refund | Dev D | M | identity |
+| `notifications` | Email/SMS | Dev A | S | orders, payments |
+
+### Module: `orders`
+- **Responsibility:** create, confirm, cancel, fulfill orders.
+- **Public API:** `OrderFacade.createOrder(cmd)`, `OrderFacade.getOrder(id)`; events `OrderCreated`, `OrderConfirmed`, `OrderCancelled`.
+- **Internal:** `Order`, `OrderLine`, `OrderRepository`, `PricingService`.
+- **Data owned:** `orders`, `order_lines`.
+- **Invariants:** order total = sum(line price × qty); cannot cancel after shipped.
+- **SLA:** create p95 < 200ms.
+
+### Communication
+- `orders` calls `catalog.PricingFacade.price(items)` sync during create.
+- `orders` emits `OrderCreated`; `notifications` listens async.
+- `payments` charges via saga: `PaymentRequested` → `PaymentSucceeded/Failed` → `OrderConfirmed/Cancelled`.
+
+### Data
+Single Postgres, schema-per-module: `orders.*`, `catalog.*`, etc. Cross-module reads only via facades.
+
+### Scaling
+Vertical to 8 vCPU; Redis cache for catalog reads; worker process for email sending. No service split planned.
+
+## 13. Checklist (Definition of Done)
+- [ ] Every capability maps to exactly one module.
+- [ ] Dependency graph is acyclic (or documented).
+- [ ] Each table has a single owner.
+- [ ] All cross-module access uses facades/events.
+- [ ] Boundary rules enforced in CI.
+- [ ] Observability tagged by module.
+- [ ] Rollback plan documented per module.
+- [ ] Worked example removed/translated to real system.

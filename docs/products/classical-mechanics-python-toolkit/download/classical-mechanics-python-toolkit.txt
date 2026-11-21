@@ -1,0 +1,159 @@
+# Classical Mechanics Python Toolkit
+
+Ready-to-run Python templates for textbook physics and double pendulum simulations.
+
+```markdown
+# Classical Mechanics Python Toolkit
+
+> **Promise:** Ready-to-run Python templates for textbook physics and chaotic double pendulum simulations.
+
+## Quick Start Instructions
+
+1. **Prerequisites:** Ensure you have Python 3.8+ installed along with the required scientific computing libraries.
+2. **Installation:** Install dependencies via pip:
+   ```bash
+   pip install numpy scipy matplotlib
+   ```
+3. **Execution:** Copy the code block below into a file named `toolkit.py` and run it:
+   ```bash
+   python toolkit.py
+   ```
+
+---
+
+## Toolkit Code Template
+
+```python
+"""
+Classical Mechanics Python Toolkit
+--------------------------------
+A ready-to-run module containing standard numerical solvers for classical 
+mechanics problems, featuring a textbook Harmonic Oscillator and a chaotic 
+Double Pendulum simulation using Lagrangian mechanics and scipy.integrate.
+"""
+
+import numpy as np
+from scipy.integrate import solve_ivp
+import matplotlib.pyplot as plt
+
+# ==========================================
+# SECTION 1: PHYSICS MODELS (DERIVATIVES)
+# ==========================================
+
+def harmonic_oscillator_ode(t, y, omega_0):
+    """
+    Undamped Simple Harmonic Oscillator: d^2x/dt^2 + omega_0^2 * x = 0
+    State vector y: [x, v] where x is position, v is velocity.
+    """
+    x, v = y
+    dxdt = v
+    dvdt = -(omega_0**2) * x
+    return [dxdt, dvdt]
+
+def double_pendulum_ode(t, y, L1, L2, m1, m2, g):
+    """
+    Double Pendulum Equations of Motion derived via Lagrangian Mechanics.
+    State vector y: [theta1, omega1, theta2, omega2]
+    """
+    theta1, omega1, theta2, omega2 = y
+    
+    delta = theta1 - theta2
+    
+    # Denominators for the equations of motion
+    den1 = (m1 + m2) * L1 - m2 * L1 * np.cos(delta)**2
+    den2 = (L2 / L1) * den1
+    
+    # Angular acceleration 1 (alpha1)
+    num1 = (m2 * L1 * omega1**2 * np.sin(delta) * np.cos(delta) +
+            m2 * g * np.sin(theta2) * np.cos(delta) +
+            m2 * L2 * omega2**2 * np.sin(delta) -
+            (m1 + m2) * g * np.sin(theta1))
+    domega1_dt = num1 / den1
+    
+    # Angular acceleration 2 (alpha2)
+    num2 = (-m2 * L2 * omega2**2 * np.sin(delta) * np.cos(delta) +
+            (m1 + m2) * (g * np.sin(theta1) * np.cos(delta) -
+                         L1 * omega1**2 * np.sin(delta) -
+                         g * np.sin(theta2)))
+    domega2_dt = num2 / den2
+    
+    return [omega1, domega1_dt, omega2, domega2_dt]
+
+# ==========================================
+# SECTION 2: WORKED EXAMPLE & SIMULATION
+# ==========================================
+
+if __name__ == "__main__":
+    print("Running Classical Mechanics Toolkit Demonstrations...")
+
+    # --- Example 1: Simple Harmonic Oscillator ---
+    print("\n[1/2] Simulating Simple Harmonic Oscillator...")
+    omega_0 = 2.0  .np.pi  # Natural frequency (rad/s)
+    t_span = (0.0, 10.0)
+    t_eval = np.linspace(t_span[0], t_span[1], 500)
+    y0_ho = [1.0, 0.0]  # Initial displacement = 1.0 m, initial velocity = 0.0 m/s
+
+    sol_ho = solve_ivp(
+        harmonic_oscillator_ode, 
+        t_span, 
+        y0_ho, 
+        args=(omega_0,), 
+        t_eval=t_eval, 
+        method='RK45'
+    )
+
+    # --- Example 2: Chaotic Double Pendulum ---
+    print("[2/2] Simulating Chaotic Double Pendulum...")
+    # Parameters
+    L1, L2 = 1.0, 1.0  # Lengths of rods (m)
+    m1, m2 = 1.0, 1.0  # Masses (kg)
+    g = 9.81           # Acceleration due to gravity (m/s^2)
+    
+    # Initial conditions: [theta1, omega1, theta2, omega2] in radians
+    y0_dp = [np.pi / 2, 0.0, np.pi / 2, 0.0]
+    
+    sol_dp = solve_ivp(
+        double_pendulum_ode, 
+        t_span, 
+        y0_dp, 
+        args=(L1, L2, m1, m2, g), 
+        t_eval=t_eval, 
+        method='DOP853', 
+        rtol=1e-9, 
+        atol=1e-9
+    )
+
+    # Convert double pendulum angles to Cartesian coordinates for plotting
+    theta1, theta2 = sol_dp.y[0], sol_dp.y[2]
+    x1 = L1 * np.sin(theta1)
+    y1 = -L1 * np.cos(theta1)
+    x2 = x1 + L2 * np.sin(theta2)
+    y2 = y1 - L2 * np.cos(theta2)
+
+    # ==========================================
+# SECTION 3: VISUALIZATION
+# ==========================================
+
+    print("\nGenerating plots...")
+    fig, axes = plt.subplots(1, 2, figsize=(14, 6))
+
+    # Plot 1: Harmonic Oscillator Phase Space
+    axes[0].plot(sol_ho.y[0], sol_ho.y[1], color='b', lw=2)
+    axes[0].set_title("Harmonic Oscillator: Phase Space")
+    axes[0].set_xlabel("Position $x$ (m)")
+    axes[0].set_ylabel("Velocity $v$ (m/s)")
+    axes[0].grid(True)
+
+    # Plot 2: Double Pendulum Trajectory of Mass 2
+    axes[1].plot(x2, y2, color='crimson', lw=1)
+    axes[1].set_title("Double Pendulum: Trajectory of Tip ($m_2$)")
+    axes[1].set_xlabel("$x$ Position (m)")
+    axes[1].set_ylabel("$y$ Position (m)")
+    axes[1].set_aspect('equal')
+    axes[1].grid(True)
+
+    plt.tight_layout()
+    plt.show()
+    print("Simulation complete. Plots displayed successfully.")
+```
+```

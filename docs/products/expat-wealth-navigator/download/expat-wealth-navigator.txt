@@ -1,0 +1,121 @@
+# Expat Wealth Navigator
+
+Your structured playbook for managing exit wealth globally
+
+# Expat Wealth Navigator
+**Promise:** Your structured playbook for managing exit wealth globally.
+
+> **Instructions for Use:**
+> 1. Complete **Section 1** to establish your cross-border baseline and timeline.
+> 2. Use **Section 2** to map out tax residency and asset location strategies.
+> 3. Implement **Section 3** to build an adaptive, multi-currency portfolio.
+> 4. Review **Section 4** to ensure structural compliance and asset protection.
+> 5. Refer to the **Worked Example** at the end for guidance on formatting and depth.
+
+---
+
+## Section 1: Global Baseline & Timeline
+
+### 1.1 Personal & Professional Profile
+* **Current Home Country:** [e.g., United States]
+* **Target Destination Country:** [e.g., Portugal]
+* **Target Relocation Date:** [MM/YYYY]
+* **Primary Motivation:** [e.g., Career relocation, early retirement, lifestyle]
+* **Expected Duration Abroad:** [e.g., 5 years, Indefinite]
+
+### 1.2 Financial Snapshot (Base Currency: [USD/EUR/GBP])
+| Asset Class | Current Value | Location / Custodian | Liquid / Illiquid |
+| :--- | :--- | :--- | :--- |
+| Cash & Equivalents | $[0.00] | [e.g., Chase Bank, US] | Liquid |
+| Equities / Brokerage | $[0.00] | [e.g., Interactive Brokers] | Liquid |
+| Retirement Accounts | $[0.00] | [e.g., Vanguard Traditional IRA] | Tax-Advantaged |
+| Real Estate | $[0.00] | [e.g., Primary Residence, US] | Illiquid |
+| Business Interests | $[0.00] | [e.g., LLC, US] | Illiquid |
+| **Total Net Worth** | **$[0.00]** | | |
+
+---
+
+## Section 2: Tax Residency & Asset Location Strategy
+
+### 2.1 Tax Residency Mapping
+* **Home Country Exit Rules:** [e.g., IRS tax residency rules, state-level domicile breaking steps]
+* **Destination Entry Rules:** [e.g., NHR scheme in Portugal, day-count tests (183 days)]
+* **Double Taxation Treaty (DTT) Status:** [e.g., US-Portugal DTT applicability on pensions and capital gains]
+
+### 2.2 Account and Entity Structuring
+* **Brokerage Access:** [e.g., Switch US accounts to cross-border friendly brokers to avoid forced closure]
+* **Entity Migration / Maintenance:** [e.g., Keep US LLC dormant or restructure to foreign holding company]
+* **Retirement Account Management:** [e.g., Plan for Roth conversions prior to exit; manage cross-border tax traps]
+
+---
+
+## Section 3: Multi-Currency Portfolio & Cash Flow Architecture
+
+### 3.1 Currency Exposure & Hedging
+* **Target Currency Breakdown:**
+  * Destination Currency ([EUR/GBP/etc.]): `[0]%`
+  * Home Currency ([USD/etc.]): `[0]%`
+  * Global Reserve ([CHF/Gold/etc.]): `[0]%`
+* **FX Transfer Strategy:** [e.g., Use specialized transfer services (Wise/OFX) instead of retail banks; avoid large lump-sum conversions without dollar-cost averaging]
+
+### 3.2 Income & Expense Blueprint
+* **Expected Monthly Income:** `[Amount & Currency]` (Source: [e.g., Remote salary, rental income, dividends])
+* **Expected Monthly Expenses:** `[Amount & Currency]` (Breakdown: Housing, Insurance, Living, Travel)
+* **Emergency Fund:** `[Amount]` held in `[Currency]` at `[Institution Name]`, covering `[X]` months of expenses.
+
+---
+
+## Section 4: Compliance, Estate Planning & Risk Management
+
+### 4.1 Cross-Border Compliance Checklist
+* [ ] **Tax Filings:** Calendar set for home country and destination country filing deadlines.
+* [ ] **Reporting Requirements:** [e.g., FBAR, FATCA, foreign asset declarations].
+* [ ] **Insurance Review:** International health insurance, global liability, and property insurance secured.
+
+### 4.2 Estate & Succession Planning
+* **Will & Testament:** [e.g., Draft jurisdiction-specific wills or adopt EU Succession Regulation (Brussels IV) preferences].
+* **Power of Attorney (POA):** Financial and medical POAs established for both home and destination countries.
+* **Beneficiary Designations:** Updated across all international accounts and retirement vehicles.
+
+---
+---
+
+## Worked Example
+
+### Section 1: Global Baseline & Timeline (Example)
+* **Current Home Country:** United States
+* **Target Destination Country:** Portugal
+* **Target Relocation Date:** 06/2026
+* **Primary Motivation:** Semi-retirement and lifestyle relocation
+* **Expected Duration Abroad:** Indefinite
+
+| Asset Class | Current Value | Location / Custodian | Liquid / Illiquid |
+| :--- | :--- | :--- | :--- |
+| Cash & Equivalents | $50,000 | Chase Bank, US | Liquid |
+| Equities / Brokerage | $300,000 | Charles Schwab, US | Liquid |
+| Retirement Accounts | $450,000 | Fidelity (Traditional 401k/IRA) | Tax-Advantaged |
+| Real Estate | $400,000 | Primary Residence, Austin, TX | Illiquid |
+| Business Interests | $0 | N/A | N/A |
+| **Total Net Worth** | **$1,200,000** | | |
+
+### Section 2: Tax Residency & Asset Location Strategy (Example)
+* **Tax Residency Mapping:** 
+  * *US:* File Form 1040 annually utilizing Foreign Earned Income Exclusion (FEIE) or Foreign Tax Credit (FTC); establish non-residency for Texas state tax.
+  * *Portugal:* Apply for D7 visa, register for Non-Habitual Resident (NHR 2.0 / comparable tax incentive) status upon arrival, pass the 183-day physical presence test.
+* **Account and Entity Structuring:** Migrate Charles Schwab account to Schwab International prior to departure to maintain access while residing in the EU (compliance with MiFID II regulations).
+
+### Section 3: Multi-Currency Portfolio & Cash Flow Architecture (Example)
+* **Target Currency Breakdown:**
+  * EUR (Euro): `50%`
+  * USD (US Dollar): `40%`
+  * CHF (Swiss Franc): `10%`
+* **Income & Expense Blueprint:**
+  * **Expected Monthly Income:** €4,500 (Mix of US dividend portfolio and digital consulting income).
+  * **Expected Monthly Expenses:** €3,000 (Rent in Lisbon, private health insurance, food, leisure).
+  * **Emergency Fund:** $30,000 held in USD equivalents via a multi-currency account, covering 6 months of baseline expenses.
+
+### Section 4: Compliance, Estate Planning & Risk Management (Example)
+* **Cross-Border Compliance Checklist:**
+  * [x] FBAR filing calendar synchronized for April/October deadlines.
+  * [x] Cigna Global health insurance policy secured for full family coverage.
+* **Estate & Succession Planning:** Execute a Portuguese-compliant will alongside an updated US pour-over will to handle multi-jurisdictional real estate assets cleanly.
